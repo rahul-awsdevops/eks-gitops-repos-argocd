@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1  # Version for ArgoCD Application custom resource
+kind: Application                 # Defines this as an ArgoCD Application object
+
+metadata:
+  name: car-rental-application   # App name visible in ArgoCD UI
+  namespace: argocd              # Must match the namespace where ArgoCD is installed
+
+spec:
+  project: default               # Grouping of applications (can set RBAC & policies per project)
+
+  source:                        # Tells ArgoCD where to fetch the Kubernetes manifests from
+    repoURL: https://github.com/rahul-awsdevops/eks-gitops-repos-argocd.git  # Git repo
+    targetRevision: main         # Branch to watch (you’ve correctly set to 'main')
+    path: car-rental-app/aws-eks-kube-manifests  # Folder in repo with the YAMLs
+
+  destination:                   # Where to deploy in the cluster
+    server: https://kubernetes.default.svc  # In-cluster Kubernetes API
+    namespace: car-rental-apps             # Namespace for your app workloads
+
+  syncPolicy:                    # How the app syncs from Git to K8s
+    syncOptions:
+    - CreateNamespace=true       # Auto-create the target namespace if missing
+
+    automated:
+      selfHeal: true             # Auto-fix drift between Git and live cluster
+      prune: true                # Delete resources no longer present in Git
