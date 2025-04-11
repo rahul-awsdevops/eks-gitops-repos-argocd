@@ -11,7 +11,7 @@ spec:
   source:                        # Tells ArgoCD where to fetch the Kubernetes manifests from
     repoURL: https://github.com/rahul-awsdevops/eks-gitops-repos-argocd.git  # Git repo
     targetRevision: main         # Branch to watch (you’ve correctly set to 'main')
-    path: car-rental-app/aws-eks-kube-manifests  # Folder in repo with the YAMLs
+    path: car-rental-apps/aws-eks-kube-manifests  # Folder in repo with the YAMLs
 
   destination:                   # Where to deploy in the cluster
     server: https://kubernetes.default.svc  # In-cluster Kubernetes API
